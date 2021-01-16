@@ -12,7 +12,7 @@ export interface ClientModel {
 export interface Rule {
   name: string;
   operator: string;
-  value: string | number;
+  value: any;
 }
 
 export interface FilterModel {
