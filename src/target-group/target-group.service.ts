@@ -5,11 +5,15 @@ import { Request } from 'express';
 import { v4 as uuid } from 'uuid';
 import { Client, TargetGroup } from './target-group.entity';
 import { FilterModel, Rule } from './target-group.models';
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 
 @Injectable({ scope: Scope.REQUEST })
 export class TargetGroupService {
 
     constructor(
+        @InjectRepository(TargetGroup)
+        private readonly targetGroupRepository: Repository<TargetGroup>,
         @Inject(REQUEST) private readonly request: Request,
         private readonly neo4jService: Neo4jService
     ) {}
@@ -24,7 +28,7 @@ export class TargetGroupService {
                 })
     }
 
-    createTargetGroup(name: string, filter: FilterModel): Promise<TargetGroup> {
+    async createTargetGroup(name: string, filter: FilterModel): Promise<TargetGroup> {
         const id = uuid();
         const query = `
         MATCH (c1:Client) WHERE ${this.createQuery(filter.rules, "c1").join(' AND ')}
@@ -33,14 +37,29 @@ export class TargetGroupService {
             this.createQuery(filter.relatedEntities[0].rules, "c2").join(' AND ') : ""
         }
         RETURN DISTINCT c1`
-        return this.neo4jService.write(query).then(res => {
-            const c = res.records.map(r => r.get("c1"));
-            return new TargetGroup(name, id, c, filter);
-        })
+        const res = await this.neo4jService.write(query)
+        const c = res.records.map(r => r.get("c1"));
+        const tg = new TargetGroup()
+        tg.name = name;
+        tg.id = id;
+        tg.clients = c;
+        tg.filter = filter;
+        return this.targetGroupRepository.save(tg);
+    }
+
+    getTargetGroup(id: string): Promise<any> {
+        return this.targetGroupRepository.findOne({_id: id});
+    }
+
+    deleteTemplate(id: string): Promise<any> {
+        return this.targetGroupRepository.delete({_id: id});
+    }
+
+    list(): Promise<any> {
+        return this.targetGroupRepository.find();
     }
 
     createQuery(rules: Rule[], entity: string): string[] {
-
         return rules.map(r => {
             return entity + "." + r.name + r.operator + (!this.testForNumber(r.value) ? JSON.stringify(r.value) : r.value);
         })

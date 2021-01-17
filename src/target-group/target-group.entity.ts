@@ -1,19 +1,24 @@
-import { Node } from 'neo4j-driver'
-import { FilterModel } from './target-group.models';
+import { Node } from "neo4j-driver"
+import { FilterModel } from "./target-group.models";
+import { Column, Entity, ObjectIdColumn, PrimaryColumn } from "typeorm";
 
+@Entity('TargetGroup')
 export class TargetGroup {
 
-    constructor(
-      private name: string,
-      private id: string,
-      private clients: Client[],
-      private filter: FilterModel) {}
+    @ObjectIdColumn()
+    _id: string;
 
-    toJson(): Record<string, any> {
-        return {
-            ...this,
-        }
-    }
+    @PrimaryColumn()
+    id: string;
+
+    @Column()
+      name: string;
+
+    @Column()
+      clients: Client[];
+
+    @Column()
+      filter: FilterModel;
 }
 
 

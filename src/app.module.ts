@@ -4,10 +4,13 @@ import { Neo4jModule, Neo4jConfig } from 'nest-neo4j';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TargetGroupModule } from './target-group/target-group.module';
+import { TemplateModule } from './template/template.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRoot(),
     Neo4jModule.forRootAsync({
       imports: [ ConfigModule ],
       inject: [ ConfigService ],
@@ -21,6 +24,7 @@ import { TargetGroupModule } from './target-group/target-group.module';
       })
     }),
     TargetGroupModule,
+    TemplateModule,
   ],
   providers: [AppService],
   controllers: [AppController],
