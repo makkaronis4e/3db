@@ -3,7 +3,6 @@ import { TargetGroupController } from './target-group.controller';
 import { Neo4jService } from 'nest-neo4j/dist';
 import { TargetGroupService } from './target-group.service';
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { Template } from "../template/template.entity";
 import { TargetGroup } from "./target-group.entity";
 
 @Module({

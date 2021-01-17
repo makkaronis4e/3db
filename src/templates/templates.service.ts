@@ -3,13 +3,13 @@ import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { v4 as uuid } from 'uuid';
 import { InjectRepository } from "@nestjs/typeorm";
-import { Template } from "./template.entity";
+import { Template } from "./templates.entity";
 import { Repository } from "typeorm";
-import { TemplateModel } from "./template.models";
+import { TemplateModel } from "./templates.models";
 
 
 @Injectable({ scope: Scope.REQUEST })
-export class TemplateService {
+export class TemplatesService {
 
     constructor(
         @InjectRepository(Template)

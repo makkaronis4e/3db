@@ -4,8 +4,9 @@ import { Neo4jModule, Neo4jConfig } from 'nest-neo4j';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TargetGroupModule } from './target-group/target-group.module';
-import { TemplateModule } from './template/template.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TemplatesModule } from "./templates/templates.module";
+import { CampaignsModule } from "./campaigns/campaigns.module";
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       })
     }),
     TargetGroupModule,
-    TemplateModule,
+    TemplatesModule,
+    CampaignsModule,
   ],
   providers: [AppService],
   controllers: [AppController],

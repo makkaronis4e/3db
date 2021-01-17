@@ -1,14 +1,13 @@
 import { Controller, Get, Post, Body, UseInterceptors, Param, Delete } from "@nestjs/common";
 import { Neo4jTypeInterceptor } from 'nest-neo4j/dist';
-import { Template } from "./template.entity";
-import { TemplateService } from "./template.service";
-import { TemplateModel } from "./template.models";
+import { TemplatesService } from "./templates.service";
+import { TemplateModel } from "./templates.models";
 
 @UseInterceptors(Neo4jTypeInterceptor)
-@Controller('template')
-export class TemplateController {
+@Controller('templates')
+export class TemplatesController {
 
-    constructor(private readonly templateService: TemplateService) {}
+    constructor(private readonly templateService: TemplatesService) {}
 
     @Get("/:id")
     async getTemplate(@Param('id') id: string) {

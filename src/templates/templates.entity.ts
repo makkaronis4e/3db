@@ -1,5 +1,5 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from "typeorm";
-import { Markup } from "./template.models";
+import { Markup } from "./templates.models";
 
 @Entity('template')
 export class Template {
