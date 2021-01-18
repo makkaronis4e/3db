@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:postgres@localhost:5432/postgres?schema=public"
+}
+
+model campaign {
+  id?            String    @id
+  name          String?
+  contentid     String?
+  targetgroupid String?
+  priorityid    String?
+  priority      priority? @relation(fields: [priorityid], references: [id])
+}
+
+model priority {
+  name        String?
+  probability Int?
+  id?          String     @id
+  campaign    campaign[]
+}
